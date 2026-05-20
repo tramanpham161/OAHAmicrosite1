@@ -52,6 +52,20 @@ export default function App() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const subject = encodeURIComponent(`OAHA Wales Collaboration Inquiry (${contactFormWho})`);
+    const body = encodeURIComponent(
+      `Hello Nina,\n\n` +
+      `I would like to get involved in the Wales Progress/Social Mobility initiative.\n\n` +
+      `Name: ${contactFormName}\n` +
+      `Role: ${contactFormWho}\n` +
+      `My Email: ${contactFormEmail}\n\n` +
+      `Message:\n${contactFormMessage}\n\n` +
+      `Sent via Wales Progress Update portal.`
+    );
+    
+    // Launch mail client
+    window.location.href = `mailto:nina.slingsby@oaha.uk?subject=${subject}&body=${body}`;
     setIsSubmitted(true);
   };
 
@@ -358,20 +372,43 @@ export default function App() {
               </div>
 
               {isSubmitted ? (
-                <div className="bg-white border-2 border-[#1F362B] p-8 rounded text-center space-y-4 shadow-sm">
+                <div className="bg-white border border-[#e5e3dc] p-8 rounded text-center space-y-4 shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-[#1F362B]/10 text-[#1F362B] flex items-center justify-center mx-auto">
                     <Check className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#1F362B] uppercase tracking-wider text-xs">Form Transmitted Successfully</h3>
+                  <h3 className="text-lg font-bold text-[#1F362B] uppercase tracking-wider text-xs">Message Prepared</h3>
                   <p className="text-xs text-[#51615a] leading-relaxed">
-                    Thank you, <strong>{contactFormName || "Partner"}</strong>. We have logged your details as a <strong>{contactFormWho}</strong>. Our Wales team will connect with you shortly on <strong>{contactFormEmail}</strong> relative to Phase 2.
+                    Thank you, <strong>{contactFormName || "Partner"}</strong>. Your enquiry details as an active <strong>{contactFormWho}</strong> have been drafted to <strong>nina.slingsby@oaha.uk</strong>.
                   </p>
-                  <button
-                    onClick={handleResetForm}
-                    className="px-4 py-2 border border-[#1F362B] text-[#1F362B] text-[10px] uppercase font-bold tracking-wider hover:bg-[#faf9f6] transition-all cursor-pointer"
-                  >
-                    Submit Another Response
-                  </button>
+                  <p className="text-xs text-[#51615a] leading-relaxed">
+                    If your email client didn't launch automatically with the message pre-filled, you can trigger it manually below or send a standard message.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                    <button
+                      onClick={() => {
+                        const subject = encodeURIComponent(`OAHA Wales Collaboration Inquiry (${contactFormWho})`);
+                        const body = encodeURIComponent(
+                          `Hello Nina,\n\n` +
+                          `I would like to get involved in the Wales Progress/Social Mobility initiative.\n\n` +
+                          `Name: ${contactFormName}\n` +
+                          `Role: ${contactFormWho}\n` +
+                          `My Email: ${contactFormEmail}\n\n` +
+                          `Message:\n${contactFormMessage}\n\n` +
+                          `Sent via Wales Progress Update portal.`
+                        );
+                        window.location.href = `mailto:nina.slingsby@oaha.uk?subject=${subject}&body=${body}`;
+                      }}
+                      className="px-4 py-2.5 bg-[#1F362B] text-white text-[10px] uppercase font-bold tracking-wider hover:opacity-90 transition-all cursor-pointer"
+                    >
+                      Open Email Client Again
+                    </button>
+                    <button
+                      onClick={handleResetForm}
+                      className="px-4 py-2.5 border border-[#1F362B] text-[#1F362B] text-[10px] uppercase font-bold tracking-wider hover:bg-[#faf9f6] transition-all cursor-pointer"
+                    >
+                      Submit Another Response
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleFormSubmit} className="space-y-4 bg-white border border-[#e5e3dc] p-8 rounded shadow-sm">
@@ -380,7 +417,6 @@ export default function App() {
                     <input
                       type="text"
                       required
-                      placeholder="Alun Davies"
                       value={contactFormName}
                       onChange={(e) => setContactFormName(e.target.value)}
                       className="w-full bg-white border border-[#e5e3dc] p-3 text-sm focus:outline-none focus:border-[#1F362B]"
